@@ -9,6 +9,7 @@ import {
   Skeleton,
   SkeletonText,
 } from '@chakra-ui/react'
+import { randomInt } from 'crypto'
 import { useEffect, useState } from 'react'
 import Room from '../components/Room'
 import RoomSkeleton from '../components/RoomSkeleton'
@@ -75,7 +76,7 @@ export default function Home() {
       ) : null}
       {rooms.map((room) => (
         <Room
-          imageUrl={room.photos[0].file}
+          imageUrl={`https://source.unsplash.com/random/450x${450}`}
           name={room.name}
           rating={room.rating}
           city={room.city}
