@@ -66,6 +66,8 @@ export default function Home() {
       ) : null}
       {data?.map((room) => (
         <Room
+          key={room.pk}
+          pk={room.pk}
           imageUrl={`https://source.unsplash.com/random/450x${450}`}
           name={room.name}
           rating={room.rating}
