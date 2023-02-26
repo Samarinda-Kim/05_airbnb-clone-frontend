@@ -2,6 +2,7 @@ import {
   Avatar,
   AvatarBadge,
   Box,
+  Container,
   Grid,
   GridItem,
   Heading,
@@ -86,10 +87,10 @@ export default function RoomDetail() {
         </Avatar>
       </HStack>
       <Box mt={10}>
-        <Heading fontSize={'2xl'}>
+        <Heading mb={5} fontSize={'2xl'}>
           <Skeleton isLoaded={!isReviewsLoading} height={'30px'}>
             <HStack>
-              <FaStar /> <Text>{data?.rating}</Text>
+              <FaStar /> <Text>{data?.rating.toFixed(1)}</Text>
               <Text>ㆍ</Text>
               <Text>
                 {reviewsData?.length} review
@@ -98,6 +99,29 @@ export default function RoomDetail() {
             </HStack>
           </Skeleton>
         </Heading>
+        <Container mt={'15'} maxW="container.lg" marginX="none">
+          <Grid gap={5} templateColumns={'1fr 1fr'}>
+            {reviewsData?.map((review, index) => (
+              <VStack alignItems={'flex-start'} key={index}>
+                <HStack>
+                  <Avatar
+                    name={review.user.name}
+                    src={review.user.avatar}
+                    size={'md'}
+                  />
+                  <VStack spacing={0} alignItems={'flex-start'}>
+                    <Heading fontSize={'md'}>{review.user.name}</Heading>
+                    <HStack spacing={1}>
+                      <FaStar size="12px" />
+                      <Text>{review.rating.toFixed(1)}</Text>
+                    </HStack>
+                    <Text>{review.payload}</Text>
+                  </VStack>
+                </HStack>
+              </VStack>
+            ))}
+          </Grid>
+        </Container>
       </Box>
     </Box>
   )
