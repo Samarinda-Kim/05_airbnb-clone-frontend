@@ -10,12 +10,12 @@ const instance = axios.create({
 export const getRooms = () => instance.get("rooms/").then((response) => response.data)
 
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {
-    const [__, roomPk] = queryKey;
+    const [_, roomPk] = queryKey;
     return instance.get(`rooms/${roomPk}`).then((response) => response.data)
 }
 
 export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
-    const [__, roomPk] = queryKey;
+    const [_, roomPk] = queryKey;
     return instance.get(`rooms/${roomPk}/reviews`).then((response) => response.data)
 }
 
@@ -31,4 +31,4 @@ export const githubLogIn = (code: string) => instance.post(`users/github`, { cod
     headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
     },
-}).then(response => response.status)
+}).then((response) => response.status)
