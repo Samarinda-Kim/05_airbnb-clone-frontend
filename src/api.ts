@@ -72,7 +72,7 @@ export interface ISignUpError {
     error: string
 }
 
-export const signUp = ({ username, password, email, name, currency, gender, language, }: ISignUpVariables) => instance.post(`users/`, { username, password, email, name, currency, gender, language, }, {
+export const signUp = ({ username, password, email, name, currency, gender, language, }: ISignUpVariables) => instance.post(`users/sign-up`, { username, password, email, name, currency, gender, language, }, {
     headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
     },

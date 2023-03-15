@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  Text,
   useToast,
   VStack,
 } from '@chakra-ui/react'
@@ -36,16 +37,27 @@ interface IForm {
 }
 
 export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
-  const { register, handleSubmit, reset } = useForm<IForm>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<IForm>()
   const toast = useToast()
   const queryClient = useQueryClient()
   const mutation = useMutation<ISignUpSuccess, ISignUpError, ISignUpVariables>(
     signUp,
     {
-      onSuccess: () => {
-        toast({ title: 'Welcome!', status: 'success' })
+      onSuccess: (data) => {
+        toast({
+          title: 'Signed Up!',
+          description: 'You have been signed up.',
+          status: 'success',
+          position: 'bottom-right',
+        })
         onClose()
         queryClient.refetchQueries(['me'])
+        reset()
       },
       onError: () => {
         reset()
@@ -90,6 +102,7 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                 }
               />
               <Input
+                isInvalid={Boolean(errors.name?.message)}
                 {...register('name', { required: true })}
                 variant={'filled'}
                 placeholder="Name"
@@ -104,6 +117,7 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                 }
               />
               <Input
+                isInvalid={Boolean(errors.email?.message)}
                 {...register('email', { required: true })}
                 variant={'filled'}
                 placeholder="Email"
@@ -118,6 +132,7 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                 }
               />
               <Input
+                isInvalid={Boolean(errors.username?.message)}
                 {...register('username', { required: true })}
                 variant={'filled'}
                 placeholder="Username"
@@ -132,6 +147,7 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                 }
               />
               <Input
+                isInvalid={Boolean(errors.password?.message)}
                 {...register('password', { required: true })}
                 variant={'filled'}
                 placeholder="Password"
@@ -160,8 +176,14 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
               <option value="en">English</option>
             </Select>
           </VStack>
+          {mutation.isError ? (
+            <Text color="red.500" textAlign={'center'} fontSize="sm">
+              Username or email already taken
+            </Text>
+          ) : null}
           <Button
             isLoading={mutation.isLoading}
+            type="submit"
             mt={4}
             colorScheme={'red'}
             w="100%"
